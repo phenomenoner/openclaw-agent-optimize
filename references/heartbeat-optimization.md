@@ -44,7 +44,36 @@ Offload the "alive check" to a dedicated, stateless worker.
 
 ---
 
-## 3) Common hidden token sinks (and safer replacements)
+## 3) The "Hybrid Heartbeat" Pattern (RAG Optimization)
+
+**Problem:** The "Isolated Heartbeat" is cheap but "dumb"—it has no memory of recent conversations or active tasks in the main session. It cannot perform "context-aware" follow-ups (e.g., "Check if the compilation finished").
+
+**Solution: Retrieval-Augmented Generation (RAG) for Heartbeats**
+Combine the low cost of an isolated session with targeted memory retrieval.
+
+1.  **Write Context (Main Session):**
+    - Ensure the main agent writes key state/tasks to a daily memory file (e.g., `memory/YYYY-MM-DD.md`) or a dedicated `HEARTBEAT.md` checklist.
+    - This happens naturally as part of good agent behavior (e.g., "Updating memory with current task...").
+
+2.  **Read Context (Isolated Heartbeat):**
+    - Modify the Isolated Heartbeat's prompt (payload) to include a retrieval step.
+    - **Prompt:** `"Identify today's date and read `memory/YYYY-MM-DD.md`. Check for active tasks marked TODO or Monitoring. If found, verify their status."`
+
+**Why it works:**
+- **Cost:** Still uses a fresh, empty session (~1k input tokens). Reading a 50-line memory file adds negligible cost.
+- **Intelligence:** The agent "knows" what the user was doing recently without loading the entire 100k+ token history.
+
+**Comparison:**
+
+| Strategy | Cost | Context | Use Case |
+| :--- | :--- | :--- | :--- |
+| **Native** | $$$ | Full | Deep conversational continuity, "Her" scenarios. |
+| **Isolated** | $ | None | Basic system uptime, dumb alerts. |
+| **Hybrid (RAG)** | $ | **High (Selected)** | **Best balance.** Smart monitoring of known tasks. |
+
+---
+
+## 4) Common hidden token sinks (and safer replacements)
 
 ### A. Large tool outputs
 Examples:
@@ -66,7 +95,7 @@ Replace with:
 
 ---
 
-## 3) Three recommended heartbeat profiles (pick one)
+## 5) Three recommended heartbeat profiles (pick one)
 
 ### Profile A — Ultra Low Token (recommended when cost matters)
 **Behavior:** On heartbeat poll, reply exactly `HEARTBEAT_OK`. No tools. No reads.
@@ -97,7 +126,7 @@ Rules:
 
 ---
 
-## 4) Disable heartbeat delivery (when heartbeat turns are inherently expensive)
+## 6) Disable heartbeat delivery (when heartbeat turns are inherently expensive)
 
 Sometimes heartbeat cost is dominated by **input/cache tokens** (large context reuse), even when the reply is minimal.
 
@@ -112,7 +141,7 @@ This is essentially “Profile A++”: lowest cost, but you must be comfortable 
 
 ---
 
-## 5) “Move work out of heartbeat” pattern (general)
+## 7) “Move work out of heartbeat” pattern (general)
 
 When a heartbeat step is expensive, prefer:
 - **Isolated cron** (clean context, controllable cadence)
@@ -125,7 +154,7 @@ Model-agnostic guidance:
 
 ---
 
-## 6) UX guidance: removing checks must be user-approved
+## 8) UX guidance: removing checks must be user-approved
 
 If optimization requires removing or reducing checks:
 - present the trade-off clearly (cost vs coverage)
