@@ -43,6 +43,7 @@ Rules:
 - Heartbeat should decide “do we need action?” not do the heavy work.
 - Move heavy work to isolated cron or scripts.
 - Never call large-output tools on every poll unless user explicitly accepts the cost.
+- If heartbeat turns are still expensive due to large **input/cache context**, consider disabling heartbeat delivery and relying on cron reporting instead (e.g., set `agents.defaults.heartbeat.target = "none"`).
 
 ---
 

@@ -46,11 +46,14 @@ Replace with:
 **Behavior:** On heartbeat poll, reply exactly `HEARTBEAT_OK`. No tools. No reads.
 
 Pros:
-- near-zero usage
+- near-zero *output* usage
 - no surprise bills
 
 Cons:
 - loses automatic early warning (sub-agent death / stuck jobs)
+- **important:** if the platform still injects a large conversation context into each heartbeat turn, you may still see high *input/cache* tokens despite a tiny reply
+
+**If Profile A is still expensive:** disable heartbeat delivery at the agent config level and move monitoring to cron (see “Disable heartbeat delivery” below).
 
 ### Profile B — Light Monitor (balanced)
 **Behavior:** Only check minimal state (small file) + alert on anomalies.
@@ -68,7 +71,22 @@ Rules:
 
 ---
 
-## 4) “Move work out of heartbeat” pattern (general)
+## 4) Disable heartbeat delivery (when heartbeat turns are inherently expensive)
+
+Sometimes heartbeat cost is dominated by **input/cache tokens** (large context reuse), even when the reply is minimal.
+
+In that case, the most effective fix is to stop delivering heartbeat prompts to the chat channel entirely:
+- Set: `agents.defaults.heartbeat.target = "none"`
+
+Then replace heartbeat-based monitoring with:
+- isolated cron collectors (`deliver=false`)
+- a less frequent reporter job (`deliver=true`, alert-only)
+
+This is essentially “Profile A++”: lowest cost, but you must be comfortable losing heartbeat-driven monitoring.
+
+---
+
+## 5) “Move work out of heartbeat” pattern (general)
 
 When a heartbeat step is expensive, prefer:
 - **Isolated cron** (clean context, controllable cadence)
@@ -81,7 +99,7 @@ Model-agnostic guidance:
 
 ---
 
-## 5) UX guidance: removing checks must be user-approved
+## 6) UX guidance: removing checks must be user-approved
 
 If optimization requires removing or reducing checks:
 - present the trade-off clearly (cost vs coverage)
