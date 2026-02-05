@@ -1,20 +1,32 @@
-# Agent Orchestration (Parallel-First)
+# Agent Orchestration (Parallel-First + Cost-Aware)
 
-## Core Rules
-- **Always parallelize independent tasks.** If task B does not depend on task A, spawn both.
-- Delegate long-running or noisy work to sub-agents to keep main context clean.
+## Core rules
+- **Parallelize independent tasks.** If task B does not depend on task A, spawn both.
+- Keep main session clean: delegate long/noisy work to isolated sub-agents.
 
-## Split-Role Delegation
-Use multiple sub-agents with different roles when you need diverse perspectives:
-- **Engineer**: implementation details
-- **Reviewer**: correctness & style
-- **Security**: risk assessment
+## Cost-aware delegation
+- Pass **minimal context** (goal, constraints, file paths).
+- Prefer sub-agents for:
+  - long-running research
+  - multi-step automation
+  - work that benefits from isolation (cron-like behavior)
 
-## OpenClaw Mechanics
-- Use `sessions_spawn` (or equivalent) to create sub-agents.
-- Pass only the minimal context (goal, constraints, relevant files).
-- Log sub-agent runs to `memory/delegation_log.json` for recovery.
+## Output discipline
+- Sub-agents should:
+  - write artifacts to files
+  - return a short summary + next actions
+  - avoid dumping long tool outputs into chat
 
-## When to Keep Inline
-- Quick tasks (<2 min)
-- Interactive debugging with user feedback
+## Delivery discipline
+- For automated runs, prefer **alert-only** delivery:
+  - `NO_REPLY` if nothing changed
+  - message only for new actionable signals or errors
+
+## Split-role delegation (when needed)
+- Engineer: implement
+- Reviewer: correctness & style
+- Security: risk assessment
+
+## Logging / recovery
+- Log sub-agent runs to `memory/delegation_log.json` for crash recovery.
+- Rotate/trim logs if they grow without bound.

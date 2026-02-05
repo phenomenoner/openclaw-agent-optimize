@@ -1,15 +1,20 @@
-# Context Management (Progressive Disclosure)
+# Context Management (Progressive Disclosure + Cost Hygiene)
 
-## Window Discipline
-- Avoid the last ~20% of context for big refactors or multi-file edits.
-- If close to the limit, ask to `/compact` before continuing.
+## Window discipline
+- Don’t enter the last ~20% of context when doing multi-file edits or refactors.
+- If near the limit, prefer `/compact` **before** continuing.
 
-## Progressive Disclosure (3 Levels)
-1. **Metadata always visible**: filenames, brief summaries, TODOs.
-2. **Body on trigger**: load only the file/section needed.
-3. **Bundled resources on demand**: schemas/docs moved to references or scripts.
+## Progressive disclosure (3 levels)
+1. **Metadata always visible:** filenames, brief summaries, TODOs.
+2. **Body on trigger:** load only the file/section needed.
+3. **Heavy resources on demand:** move schemas/docs to `references/` or scripts.
 
-## OpenClaw Practices
-- Store large/static content under `references/` or scripts.
-- Summarize and point instead of pasting full blocks.
-- Batch related decisions in a single call.
+## Cost hygiene patterns
+- Avoid repeatedly pasting large tool outputs into the conversation.
+- Prefer scripts that output a small, bounded summary.
+- Use fixed-size summaries: top K items, max X lines, max Y chars.
+
+## OpenClaw practices
+- Store large/static content under `references/`.
+- Store state in small JSON files; rotate/trim logs that grow without bound.
+- Batch related decisions into a single user question (reduce back-and-forth).

@@ -1,18 +1,32 @@
-# Model Selection (Tiered Routing)
+# Model Selection (Tiered, Model-Agnostic)
 
 ## Principle
-Use the **cheapest capable** model for the task. Escalate only after failure or when clearly justified.
+Use the **cheapest capable tier** for the job. Escalate only when:
+- the task repeatedly fails at a cheaper tier, or
+- correctness materially matters (risk, finance, security), or
+- the task requires deep synthesis/architecture.
 
-## Tiers
-- **Lightweight / frequent**: routine tasks, web search loops, formatting, quick scripts.
-- **Main coding / orchestration**: multi-file edits, coordinating sub-agents, integration work.
-- **Deep reasoning / architecture**: design decisions, critical risk analysis, large refactors.
+Avoid naming specific models in guidance. Treat “model” as a **tier**.
 
-## OpenClaw Practice
-- **Source of truth**: live config (`config.get`) and `MEMORY.md` model routing.
-- **Sub-agents**: assign lightweight tiers by default; upgrade only if required.
-- **Ask on ambiguity**: “Recommend mid-tier for this. OK to proceed?”
+---
+
+## Tiers (conceptual)
+- **Tier 1 (cheap / frequent):** routine formatting, lightweight summaries, single-script cron runs.
+- **Tier 2 (general):** multi-file edits, orchestration, non-trivial debugging.
+- **Tier 3 (deep):** architecture, risk analysis, complex planning.
+
+---
+
+## Escalation policy
+- Start at Tier 1 for automation.
+- Escalate to Tier 2 only after *observed* failure or clear complexity.
+- Escalate to Tier 3 only with justification.
+
+If you need user approval to change a global default, ask. Otherwise prefer local overrides per job.
+
+---
 
 ## Anti-patterns
-- Using highest tier for simple tasks.
-- Repeatedly asking user for model choice when the task is routine.
+- Using Tier 3 for simple cron/heartbeat tasks.
+- Re-running the same expensive analysis every schedule tick.
+- Asking the user to choose a model for routine tasks (choose the cheapest tier that works).

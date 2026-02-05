@@ -21,6 +21,7 @@ Thank you [@affaan-m](https://github.com/affaan-m) 🎉
 | `references/cron-optimization.md` | Cron job patterns and model assignment |
 | `references/memory-patterns.md` | Daily + long-term memory file design |
 | `references/continuous-learning.md` | Hooks → instincts → skills pipeline |
+| `references/safeguards.md` | Anti-loop + budget guardrails |
 
 ## 🚀 Install
 
@@ -37,13 +38,14 @@ cp -r openclaw-agent-optimize ~/. openclaw/workspace/skills/
 
 ## 📖 How to Use
 
-The skill auto-triggers when you ask about optimizing your agent, improving your OpenClaw setup, or following agent best practices. It walks you through a 5-step audit:
+The skill auto-triggers when you ask about optimizing your agent, improving your OpenClaw setup, or following agent best practices. It walks you through a 6-step audit:
 
 1. **Audit rules + memory** — modular, short rules; memory is restart-critical only.
 2. **Model routing** — confirm tiered routing matches live config.
 3. **Context discipline** — progressive disclosure; large static data → references/scripts.
 4. **Delegation** — parallelize independent tasks; sub-agents for long/isolated work.
 5. **Heartbeat batching** — checks grouped by frequency tier.
+6. **Safeguards** — anti-loop rules + budget guardrails; prefer fallbacks over retries.
 
 ## 🔑 Key Principles (from everything-claude-code)
 

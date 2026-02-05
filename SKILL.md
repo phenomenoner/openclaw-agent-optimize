@@ -18,12 +18,16 @@ Use this skill to tune an OpenClaw workspace for **cost-aware routing**, **paral
 2. **Model routing**: confirm tiered routing (lightweight / mid / deep) aligns with live config.
 3. **Context discipline**: apply progressive disclosure; move large static data to references/scripts.
 4. **Delegation protocol**: parallelize independent tasks; use sub-agents for long/isolated work.
-5. **Heartbeat batching**: ensure checks are grouped by tier to avoid extra passes.
+5. **Heartbeat optimization**: treat heartbeat as control-plane; move heavy checks to isolated cron/scripts; offer profiles A/B/C and require user choice if removing checks.
+6. **Safeguards**: add anti-loop + budget guardrails; prefer fallbacks over retries.
 
 ## References
+- `references/optimization-playbook.md`
 - `references/model-selection.md`
 - `references/context-management.md`
 - `references/agent-orchestration.md`
 - `references/cron-optimization.md`
+- `references/heartbeat-optimization.md`
 - `references/memory-patterns.md`
 - `references/continuous-learning.md`
+- `references/safeguards.md`
