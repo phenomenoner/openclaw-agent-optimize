@@ -18,7 +18,33 @@ This guide provides **model-agnostic** patterns to reduce token burn. It avoids 
 
 ---
 
-## 2) Common hidden token sinks (and safer replacements)
+## 2) The "Isolated Heartbeat" Pattern (Best Practice)
+
+**Problem:** The "System Heartbeat" (running in the main session) is architecturally expensive for long-running agents.
+- **Context Bloat:** Main sessions accumulate history (often 50k+ tokens).
+- **Cost Multiplier:** Every heartbeat "pulse" loads this full context. Even with caching, a simple "wake up" check can cost $0.05–$0.15 per run on high-end models.
+- **Inefficiency:** 99% of the time, the agent wakes up, reads 70k tokens, says "nothing to do", and goes back to sleep.
+
+**Solution: The Isolated Heartbeat**
+Offload the "alive check" to a dedicated, stateless worker.
+
+1.  **Disable the Main Session Heartbeat:**
+    - Find the cron job targeting `sessionTarget: "main"`.
+    - Set `enabled: false`.
+    - Result: Main session goes dormant (zero cost) when not interacting with the user.
+
+2.  **Enable an Isolated Heartbeat:**
+    - Create a cron job with `sessionTarget: "isolated"`.
+    - Schedule: Every 10–15 minutes.
+    - Model: Cheapest available (e.g., `gemini-3-flash`, `gpt-5-mini`).
+    - Payload: Simple "Keep Alive" or "Gateway Healthcheck".
+    - Result: Runs with near-zero context (< 2k tokens). Cost drops by ~95% (e.g., $2.00/day $\to$ $0.10/day).
+
+**Trade-off:** The main agent becomes reactive-only. It won't self-initiate tasks unless triggered by a user message or an explicit wake event from another job. This is usually acceptable for efficient assistants.
+
+---
+
+## 3) Common hidden token sinks (and safer replacements)
 
 ### A. Large tool outputs
 Examples:

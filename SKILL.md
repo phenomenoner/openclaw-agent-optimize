@@ -1,5 +1,7 @@
 ---
-name: openclaw-agent-optimize
+name: openclaw-agent-token-optimizer
+slug: openclaw-agent-token-optimizer
+version: 1.0.0
 description: Optimize an OpenClaw agent setup (model routing, context management, delegation, rules, memory). Use when asked about optimizing agents, improving OpenClaw setup, or agent best practices.
 triggers:
   - optimize agent
