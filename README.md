@@ -50,22 +50,12 @@ cp -r openclaw-agent-optimize ~/.openclaw/workspace/skills/
 
 ## 📖 How to Use
 
-The skill auto-triggers when you ask about optimizing your agent, improving your OpenClaw setup, or following agent best practices. It walks you through a 6-step audit:
+The skill auto-triggers when you ask about optimizing your agent, improving your OpenClaw setup, or following agent best practices.
 
-1. **Audit rules + memory** — modular, short rules; memory is restart-critical only.
-2. **Model routing** — confirm tiered routing matches live config.
-3. **Context discipline** — progressive disclosure; large static data → references/scripts.
-4. **Delegation** — parallelize independent tasks; sub-agents for long/isolated work.
-5. **Heartbeat batching** — checks grouped by frequency tier.
-6. **Safeguards** — anti-loop rules + budget guardrails; prefer fallbacks over retries.
-
-## 🔑 Key Principles (from everything-claude-code)
-
-- **Cheapest capable model first.** Escalate only after failure or clear justification.
-- **Parallelize by default.** Sequential execution is a code smell.
-- **Hooks > skills for observation.** Hooks fire 100% deterministically; skills fire ~50–80%.
-- **Progressive disclosure.** Metadata always visible → body on trigger → bundled resources on demand.
-- **Batch LLM calls.** Classify multiple items in one prompt, not one by one.
+Key guidance you’ll get:
+- **Native heartbeat is expensive** (it can load large main-session context) and **isn’t always reliably isolatable** in real deployments.
+- Recommended strategy: **disable native heartbeat** and use an **isolated heartbeat cron** (alert-only).
+- Bonus: pair isolated heartbeat with **openclaw-mem** for cheap “RAG-style” task awareness.
 
 ## 📄 License
 
