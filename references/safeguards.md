@@ -64,6 +64,13 @@ Action on detection: stop + emit “need help” + write diagnostics.
 Use approvals for dangerous/high-cost actions:
 - risky exec patterns
 - restricted browser domains
+- persistent configuration changes (`config.apply`, `config.patch`, `update.run`)
+- cron creation/update/removal
+
+Before applying persistent changes, provide:
+- exact change/diff
+- expected impact
+- rollback plan
 
 ---
 

@@ -90,7 +90,8 @@ Patterns:
 
 ## 7) Guardrails (human control)
 
-- Do not edit cron definitions unless explicitly requested.
+- Do not create/edit/remove cron definitions unless explicitly requested.
+- Show the exact cron change and rollback plan before applying.
 - If optimization requires reducing coverage or frequency, present options and let the user choose.
 
 Suggested options:

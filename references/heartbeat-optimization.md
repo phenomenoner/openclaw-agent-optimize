@@ -28,9 +28,10 @@ On paper, native heartbeat supports `agents.defaults.heartbeat.session`, which s
 - It can fire far more frequently than the interval (e.g., many runs per minute) if your system generates frequent wake triggers.
 
 **Recommendation (cost-first):**
-- **Disable native heartbeat** and rely on isolated cron heartbeats:
+- Propose disabling native heartbeat and using isolated cron heartbeats:
   - `agents.defaults.heartbeat.every: "0m"`
 - Treat heartbeat as “control-plane only”, and move monitoring to an isolated cron job.
+- **Execution rule:** do not apply config changes until the user explicitly approves.
 
 If a user insists on keeping native heartbeat:
 - Keep it infrequent.
@@ -64,7 +65,8 @@ Offload the monitoring to a dedicated, stateless worker.
 1) **Disable native heartbeat:**
    - Set `agents.defaults.heartbeat.every = "0m"`.
 
-2) **Enable an isolated heartbeat cron job:**
+2) **Enable an isolated heartbeat cron job (with approval):**
+   - Ask for explicit user approval before creating/updating any cron job.
    - Create a cron job with `sessionTarget: "isolated"`.
    - Schedule: Every 10–15 minutes.
    - Model: Cheapest available.

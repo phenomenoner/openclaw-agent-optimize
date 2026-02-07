@@ -54,7 +54,8 @@ The skill auto-triggers when you ask about optimizing your agent, improving your
 
 Key guidance you’ll get:
 - **Native heartbeat is expensive** (it can load large main-session context) and **isn’t always reliably isolatable** in real deployments.
-- Recommended strategy: **disable native heartbeat** and use an **isolated heartbeat cron** (alert-only).
+- Recommended strategy: disable native heartbeat and use an isolated heartbeat cron (alert-only).
+- Persistent actions are **user-gated**: no config/cron mutations without explicit approval.
 - Bonus: pair isolated heartbeat with **openclaw-mem** for cheap “RAG-style” task awareness.
 
 ## 📄 License

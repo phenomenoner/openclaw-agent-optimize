@@ -20,6 +20,8 @@ If available, use usage/cost instrumentation (ledger, status deltas) to validate
 
 ## 1) Choose a profile (user must choose if coverage changes)
 
+Execution stance: advisory-first. Do not apply persistent config/cron changes until the user explicitly approves.
+
 When optimization reduces coverage/frequency or removes checks, present trade-offs and let the user pick.
 
 ### Profile A — Ultra Low Cost
