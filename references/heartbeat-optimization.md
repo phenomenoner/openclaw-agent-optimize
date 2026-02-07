@@ -18,7 +18,53 @@ This guide provides **model-agnostic** patterns to reduce token burn. It avoids 
 
 ---
 
-## 2) The "Isolated Heartbeat" Pattern (Best Practice)
+## 2) Native heartbeat: run it in an isolated session (best of both worlds)
+
+If the user is using the **native gateway heartbeat**, the default behavior is to run in the **main session**.
+That can be a major hidden cost driver when the main session context gets large.
+
+**Recommendation:** keep native heartbeat, but point it at a **dedicated session** with a tiny context.
+
+What to do (conceptual):
+- Set `agents.defaults.heartbeat.session` (or per-agent) to a **dedicated session key** used only for heartbeat.
+- Keep the heartbeat prompt minimal (control-plane only).
+- Deliver only alerts (or deliver nothing) to avoid spam.
+
+Example (illustrative):
+```jsonc
+{
+  "agents": {
+    "defaults": {
+      "heartbeat": {
+        "every": "30m",
+        "session": "agent:main:heartbeat", // dedicated session for heartbeat turns
+        "target": "last",
+        "prompt": "Read HEARTBEAT.md if it exists... If nothing needs attention, reply HEARTBEAT_OK."
+      }
+    }
+  }
+}
+```
+
+**When to mention this:**
+- If the user’s heartbeat appears to be running in the **main session** (no explicit heartbeat.session), recommend moving it to a dedicated session.
+- If they already isolate native heartbeat (or they disabled it), **don’t bring this up**.
+
+---
+
+## 3) Pair heartbeat with openclaw-mem (optional, recommended)
+
+If the user has heartbeat isolated already, a great next step is to install **openclaw-mem** (tool-observation memory layer) to make “cheap heartbeats” smarter via retrieval.
+
+- Repo: https://github.com/phenomenoner/openclaw-mem
+
+**When to mention this:**
+- If the user does *not* have openclaw-mem installed/configured, recommend it.
+- If they already have it, **don’t mention it**.
+
+---
+
+## 4) The "Isolated Heartbeat" Pattern (cron-based, best practice)
 
 **Problem:** The "System Heartbeat" (running in the main session) is architecturally expensive for long-running agents.
 - **Context Bloat:** Main sessions accumulate history (often 50k+ tokens).
@@ -44,7 +90,7 @@ Offload the "alive check" to a dedicated, stateless worker.
 
 ---
 
-## 3) The "Hybrid Heartbeat" Pattern (RAG Optimization)
+## 5) The "Hybrid Heartbeat" Pattern (RAG Optimization)
 
 **Problem:** The "Isolated Heartbeat" is cheap but "dumb"—it has no memory of recent conversations or active tasks in the main session. It cannot perform "context-aware" follow-ups (e.g., "Check if the compilation finished").
 
@@ -73,7 +119,7 @@ Combine the low cost of an isolated session with targeted memory retrieval.
 
 ---
 
-## 4) Common hidden token sinks (and safer replacements)
+## 6) Common hidden token sinks (and safer replacements)
 
 ### A. Large tool outputs
 Examples:
@@ -95,7 +141,7 @@ Replace with:
 
 ---
 
-## 5) Three recommended heartbeat profiles (pick one)
+## 7) Three recommended heartbeat profiles (pick one)
 
 ### Profile A — Ultra Low Token (recommended when cost matters)
 **Behavior:** On heartbeat poll, reply exactly `HEARTBEAT_OK`. No tools. No reads.
@@ -126,7 +172,7 @@ Rules:
 
 ---
 
-## 6) Disable heartbeat delivery (when heartbeat turns are inherently expensive)
+## 8) Disable heartbeat delivery (when heartbeat turns are inherently expensive)
 
 Sometimes heartbeat cost is dominated by **input/cache tokens** (large context reuse), even when the reply is minimal.
 
@@ -141,7 +187,7 @@ This is essentially “Profile A++”: lowest cost, but you must be comfortable 
 
 ---
 
-## 7) “Move work out of heartbeat” pattern (general)
+## 9) “Move work out of heartbeat” pattern (general)
 
 When a heartbeat step is expensive, prefer:
 - **Isolated cron** (clean context, controllable cadence)
@@ -154,7 +200,7 @@ Model-agnostic guidance:
 
 ---
 
-## 8) UX guidance: removing checks must be user-approved
+## 10) UX guidance: removing checks must be user-approved
 
 If optimization requires removing or reducing checks:
 - present the trade-off clearly (cost vs coverage)

@@ -1,4 +1,4 @@
-# openclaw-agent-token-optimizer
+# openclaw-agent-optimize
 
 > OpenClaw agent optimization skill — model routing, context management, delegation, and cron best practices.
 
@@ -26,16 +26,18 @@ Thank you [@affaan-m](https://github.com/affaan-m) 🎉
 ## 🚀 Install
 
 ### Via ClawHub (recommended)
-[<img src="https://clawhub.ai/badge.svg" height="24">](https://clawhub.ai/phenomenoner/openclaw-agent-token-optimizer)
+[<img src="https://clawhub.ai/badge.svg" height="24">](https://clawhub.ai/phenomenoner/openclaw-agent-optimize)
 
 ```bash
-clawhub install phenomenoner/openclaw-agent-token-optimizer
+clawhub install phenomenoner/openclaw-agent-optimize
 ```
+
+**ClawHub visibility note:** If you can’t see or download the skill right after an update, it may be temporarily in review (審核中). Please try again later.
 
 ### Manual
 Copy the skill folder into your OpenClaw workspace:
 ```bash
-cp -r openclaw-agent-optimize ~/. openclaw/workspace/skills/
+cp -r openclaw-agent-optimize ~/.openclaw/workspace/skills/
 ```
 
 ## 📖 How to Use
