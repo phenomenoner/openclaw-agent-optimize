@@ -34,6 +34,14 @@ clawhub install phenomenoner/openclaw-agent-optimize
 
 **ClawHub visibility note:** If you can’t see or download the skill right after an update, it may be temporarily in review (審核中). Please try again later.
 
+**Canonical page:** https://clawhub.ai/phenomenoner/openclaw-agent-optimize
+
+**Deprecated duplicates:**
+- https://clawhub.ai/phenomenoner/openclaw-agent-optimize-skill
+- https://clawhub.ai/phenomenoner/openclaw-agent-token-optimizer
+
+These exist because we didn’t realize updated skills can temporarily disappear during review, so we re-uploaded under different names. Please use the canonical page above.
+
 ### Manual
 Copy the skill folder into your OpenClaw workspace:
 ```bash
