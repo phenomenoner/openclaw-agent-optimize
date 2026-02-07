@@ -32,7 +32,7 @@ Thank you [@affaan-m](https://github.com/affaan-m) 🎉
 clawhub install phenomenoner/openclaw-agent-optimize
 ```
 
-**ClawHub visibility note:** If you can’t see or download the skill right after an update, it may be temporarily in review (審核中). Please try again later.
+> **Note:** If you cannot see the skill on ClawHub immediately after an update, it may be in review (審核中). Please try again later.
 
 **Canonical page:** https://clawhub.ai/phenomenoner/openclaw-agent-optimize
 
