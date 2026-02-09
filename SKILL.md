@@ -1,14 +1,6 @@
 ---
 name: openclaw-agent-optimize
-slug: openclaw-agent-optimize
-version: 1.0.8
-description: Optimize an OpenClaw agent setup (model routing, context management, delegation, rules, memory). Use when asked about optimizing agents, improving OpenClaw setup, agent best practices, or choosing optimization priorities across cost/quality/reliability.
-triggers:
-  - optimize agent
-  - optimizing agent
-  - improve OpenClaw setup
-  - agent best practices
-  - OpenClaw optimization
+description: Optimize an OpenClaw agent setup (model routing, context management, delegation, rules, memory). Use when asked about optimizing agents, improving OpenClaw setup, agent best practices, heartbeat/cost guardrails, or choosing optimization priorities across cost/quality/reliability.
 ---
 
 # OpenClaw Agent Optimization
@@ -32,6 +24,7 @@ Use this skill to tune an OpenClaw workspace for **cost-aware routing**, **paral
    - Explain why native heartbeat can become expensive in long-running setups.
    - Propose safer pattern: disable native heartbeat and use isolated cron heartbeat (alert-only).
    - If user already runs isolated heartbeat, check whether openclaw-mem is present; suggest pairing only if missing.
+   - Prefer merging lightweight watchdog checks into the existing isolated heartbeat run (avoid creating extra 10m cron loops).
    - Offer profiles A/B/C if changing coverage.
 6. **Safeguards**: add anti-loop + budget guardrails; prefer fallbacks over blind retries.
 7. **Execution gate**: if user approves changes, apply the smallest viable change first, then verify and report.
@@ -43,6 +36,7 @@ Use this skill to tune an OpenClaw workspace for **cost-aware routing**, **paral
 - `references/agent-orchestration.md`
 - `references/cron-optimization.md`
 - `references/heartbeat-optimization.md`
+- `references/heartbeat-watchdog-pattern.md`
 - `references/memory-patterns.md`
 - `references/continuous-learning.md`
 - `references/safeguards.md`
