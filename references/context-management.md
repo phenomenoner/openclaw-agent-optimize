@@ -17,4 +17,5 @@
 ## OpenClaw practices
 - Store large/static content under `references/`.
 - Store state in small JSON files; rotate/trim logs that grow without bound.
+- If session store accumulates stale cron sessions/orphan transcripts, run `context-clean-up` session-store hygiene (dry-run first, backup-first apply).
 - Batch related decisions into a single user question (reduce back-and-forth).

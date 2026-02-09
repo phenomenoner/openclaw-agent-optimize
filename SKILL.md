@@ -1,8 +1,8 @@
 ---
 name: openclaw-agent-optimize
 slug: openclaw-agent-optimize
-version: 1.0.7
-description: Optimize an OpenClaw agent setup (model routing, context management, delegation, rules, memory). Use when asked about optimizing agents, improving OpenClaw setup, or agent best practices.
+version: 1.0.8
+description: Optimize an OpenClaw agent setup (model routing, context management, delegation, rules, memory). Use when asked about optimizing agents, improving OpenClaw setup, agent best practices, or choosing optimization priorities across cost/quality/reliability.
 triggers:
   - optimize agent
   - optimizing agent
@@ -26,6 +26,7 @@ Use this skill to tune an OpenClaw workspace for **cost-aware routing**, **paral
 1. **Audit rules + memory**: ensure rules are modular/short; memory keeps only restart-critical facts.
 2. **Model routing**: confirm tiered routing (light / mid / deep) matches live config.
 3. **Context discipline**: apply progressive disclosure; move large static data to references/scripts.
+   - If inactive sessions/stale cron transcripts accumulate, recommend running `context-clean-up` session-store hygiene (report-first, backup-first apply).
 4. **Delegation protocol**: parallelize independent tasks; use isolated sub-agents for long/noisy work.
 5. **Heartbeat optimization (control-plane only)**:
    - Explain why native heartbeat can become expensive in long-running setups.
